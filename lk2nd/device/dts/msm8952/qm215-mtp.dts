@@ -5,7 +5,14 @@
 
 / {
 	qcom,msm-id = <QCOM_ID_QM215 0>;
-	qcom,board-id = <QCOM_BOARD_ID_MTP 0>;
+	/*
+	 * No qcom,board-id: the Cat S22 Flip's stock LK (QRD, subtype 4) uses
+	 * SoC DTB + DTBO matching and only accepts an appended DTB that, like
+	 * its own QM215 DTB, carries an msm-id without a board-id.
+	 */
+
+	/* Bootloader appears to really want to access symbols */
+	__symbols__ {};
 };
 
 &lk2nd {
@@ -13,7 +20,7 @@
 		model = "Cat S22 Flip (S22FLIP)";
 		compatible = "cat,s22flip";
 
-		// FIXME: lk2nd,dtb-files = "qm215-cat-s22flip";
+		lk2nd,dtb-files = "qm215-cat-s22flip";
 
 		lk2nd,match-panel;
 
@@ -22,6 +29,9 @@
 
 			qcom,mdss_dsi_jd9161z_boe_ips_video {
 				compatible = "cat,s22flip-boe-jd9161z";
+			};
+			qcom,mdss_dsi_st7701s_vga_video {
+				compatible = "cat,s22flip-st7701s";
 			};
 		};
 	};
