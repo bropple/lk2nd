@@ -96,6 +96,16 @@ unsigned check_hard_reboot_mode(void)
 }
 
 /* Return true if it is triggered by alarm. */
+bool check_lk2nd_fastboot_switch(void)
+{
+	if (REG_READ(PON_DVDD_RB_SPARE) != LK2ND_FASTBOOT_MAGIC)
+		return false;
+
+	/* One-shot: scrub it */
+	REG_WRITE(PON_DVDD_RB_SPARE, 0);
+	return true;
+}
+
 uint32_t check_alarm_boot(void)
 {
 	/* Check reboot reason and power on reason */

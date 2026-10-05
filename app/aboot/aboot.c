@@ -5607,6 +5607,13 @@ void aboot_init(const struct app_descriptor *app)
 #else
 	reboot_mode = check_reboot_mode();
 #endif
+#if USE_PON_REBOOT_REG
+	if (check_lk2nd_fastboot_switch())
+	{
+		dprintf(INFO, "lk2nd fastboot switch set by the OS\n");
+		boot_into_fastboot = true;
+	}
+#endif
 	if (reboot_mode == RECOVERY_MODE)
 	{
 		boot_into_recovery = 1;

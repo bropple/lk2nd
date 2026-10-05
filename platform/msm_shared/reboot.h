@@ -65,6 +65,13 @@ enum reboot_reason {
 
 #define RTC_TRG           4
 #define PON_SOFT_RB_SPARE 0x88F
+/*
+ * One-shot "next boot: lk2nd fastboot" switch. Linux sets LK2ND_FASTBOOT_MAGIC
+ * in a PON spare byte that the stock bootloader (which runs first and scrubs
+ * the reboot reason in SOFT_RB_SPARE) neither reads nor clears.
+ */
+#define PON_DVDD_RB_SPARE    0x88D
+#define LK2ND_FASTBOOT_MAGIC 0x6C
 
 #if USER_FORCE_RESET_SUPPORT
 /* Return 1 if it is a force resin triggered by user. */
@@ -74,6 +81,7 @@ uint32_t is_user_force_reset(void);
 unsigned check_reboot_mode(void);
 
 unsigned check_hard_reboot_mode(void);
+bool check_lk2nd_fastboot_switch(void);
 
 uint32_t check_alarm_boot(void);
 
